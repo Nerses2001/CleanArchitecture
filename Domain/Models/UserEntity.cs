@@ -14,6 +14,7 @@ namespace CleanArchitecture.Domain.Models
 
         public string Email { get; set; }
         public string PNumber { get; set; }
+        public virtual ICollection<TaskEntity>? Tasks { get; set; }
 
         public UserEntity(string userName, string name, string lName, string email, string pNumber)
         {
@@ -22,6 +23,8 @@ namespace CleanArchitecture.Domain.Models
             this.LName = lName;
             this.Email = email;
             this.PNumber = pNumber;
+
+           
 
         }
 

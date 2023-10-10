@@ -1,8 +1,6 @@
 ﻿using CleanArchitecture.Domain.Models;
 using CleanArchitecture.Infrastructure.Data.Configuration;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 namespace CleanArchitecture.Infrastructure.Data
 {
@@ -10,10 +8,10 @@ namespace CleanArchitecture.Infrastructure.Data
     {
        
         public DbSet<UserEntity> Users { get; set; }
-
+        public DbSet<TaskEntity> Tasks { get; set; }
         public DbAppContext()
         {
-           Database.EnsureCreated();
+   //        Database.EnsureCreated();
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -22,6 +20,7 @@ namespace CleanArchitecture.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new TaskConfiguration());
         }
     
 
