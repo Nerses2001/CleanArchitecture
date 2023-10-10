@@ -21,6 +21,7 @@ namespace CleanArchitecture.Infrastructure.Data.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
+
         public async Task PutAsync(string userName, UserEntity updatedUser)
         {
             if (string.IsNullOrWhiteSpace(userName))
@@ -43,6 +44,16 @@ namespace CleanArchitecture.Infrastructure.Data.Repositories
             {
                 throw new ArgumentNullException(nameof(updatedUser));
             }
+        }
+
+        public async Task DeleteAsync(string userName)
+        {
+            if (string.IsNullOrWhiteSpace(userName))
+                throw new ArgumentNullException(nameof(userName));
+            var existingUser = await _dbContext.Users.SingleOrDefaultAsync(u => u.UserName == userName) ?? throw new InvalidOperationException("User not found.");
+            _dbContext.Users.Remove(existingUser);
+            await _dbContext.SaveChangesAsync();
+
         }
     }
 }

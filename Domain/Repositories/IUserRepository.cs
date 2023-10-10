@@ -6,5 +6,6 @@ namespace CleanArchitecture.Domain.Repositories
     {
         Task CreatAsync(UserEntity user);
         Task PutAsync(string userName, UserEntity updatedUser);
+        Task DeleteAsync(string userName);
     }
 }

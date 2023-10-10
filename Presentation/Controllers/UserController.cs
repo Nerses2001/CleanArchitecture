@@ -7,7 +7,7 @@ namespace CleanArchitecture.Presentation.Controllers
 {
     [ApiController]
     [Route("taskmanagment/[controller]")]
-    public class UserController : ControllerBase, ICreatUser, IPutUser
+    public class UserController : ControllerBase, ICreatUser, IPutUser, IDelete
     {
         private readonly IUserServices _userServices;
 
@@ -61,6 +61,18 @@ namespace CleanArchitecture.Presentation.Controllers
                 return Ok("User updated successfully");
             }
             return BadRequest("Invalid user data.");
+        }
+
+        [HttpDelete("deleteuser/{username}")]
+        public async Task<IActionResult> DeleteUserAsync(string username)
+        {
+            if (!string.IsNullOrEmpty(username))
+            {
+                await _userServices.DeleteUserAsync(username);
+                return Ok("User deleted successfully");
+            }
+
+            return BadRequest("Invalid username.");
         }
 
     }

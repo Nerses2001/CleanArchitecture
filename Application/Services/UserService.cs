@@ -19,9 +19,14 @@ namespace CleanArchitecture.Application.Services
 
         public async Task PutUserAsync(string userName, UserEntity updatedUser)
         {
-        Console.WriteLine(userName + " " + updatedUser.UserName);
             if (updatedUser == null) throw new (nameof(updatedUser));
             await _userRepository.PutAsync(userName, updatedUser);
         }
+
+        public async Task DeleteUserAsync(string userName)
+        {
+            await _userRepository.DeleteAsync(userName);
+        }
+
     }
 }
