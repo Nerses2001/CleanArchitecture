@@ -1,17 +1,17 @@
 using CleanArchitecture.Domain.Models;
 using CleanArchitecture.Domain.Services;
-using CleanArchitecture.Presentation.Interfaces;
+using CleanArchitecture.Presentation.Interfaces.IUserConttroller;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.Presentation.Controllers
 {
     [ApiController]
-    [Route("taskmanagment/[controller]")]
-    public class UserController : ControllerBase, ICreatUser, IPutUser, IDelete
+    [Route("api/taskmanagment/[controller]")]
+    public class UserController : ControllerBase, ICreatUser, IPutUser, IDeleteUser
     {
-        private readonly IUserServices _userServices;
+        private readonly IUserService _userServices;
 
-        public UserController(IUserServices userServices)
+        public UserController(IUserService userServices)
         {
             this._userServices = userServices ?? throw new(nameof(_userServices));
         }

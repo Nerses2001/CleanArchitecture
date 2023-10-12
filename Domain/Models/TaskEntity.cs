@@ -11,12 +11,13 @@ namespace CleanArchitecture.Domain.Models
         public int UserId { get; set; }
         public virtual UserEntity? User { get; set; }
 
-        public TaskEntity(string name, string description, DateTime dueDate, TaskStatus status)
+        public TaskEntity(string name, string description, DateTime dueDate, TaskStatus status, int userId)
         {
-            this.Name = name;
-            this.Description = description;
-            this.DueDate = dueDate;
-            this.Status = status;
+            Name = name;
+            Description = description;
+            DueDate = dueDate;
+            Status = status;
+            UserId = userId;
         }
     }
 }

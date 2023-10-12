@@ -4,12 +4,14 @@ using CleanArchitecture.Domain.Services;
 
 namespace CleanArchitecture.Application.Services
 {
-    public class UserService : IUserServices
+    public class UserService : IUserService, IGetUserService
     {
         private readonly IUserRepository _userRepository;
-        public UserService(IUserRepository userRepository)
+        private readonly IGetUserRepository _getUser;
+        public UserService(IUserRepository userRepository, IGetUserRepository getUser)
         {
             this._userRepository = userRepository;
+            this._getUser = getUser;
         }
         public async Task CreateUserAsync(UserEntity user)
         {
@@ -26,6 +28,11 @@ namespace CleanArchitecture.Application.Services
         public async Task DeleteUserAsync(string userName)
         {
             await _userRepository.DeleteAsync(userName);
+        }
+
+        public async Task<UserEntity> GetUserAsync(string userName)
+        {
+            return await _getUser.GetAsync(userName);
         }
 
     }

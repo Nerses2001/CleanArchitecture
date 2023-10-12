@@ -1,7 +1,7 @@
 ﻿using CleanArchitecture.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CleanArchitecture.Presentation.Interfaces
+namespace CleanArchitecture.Presentation.Interfaces.IUserConttroller
 {
     public interface IPutUser
     {

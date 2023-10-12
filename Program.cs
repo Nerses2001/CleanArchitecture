@@ -10,8 +10,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<DbAppContext>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IUserServices, UserService>();
+builder.Services.AddScoped<IGetUserRepository, UserRepository>();
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 
+
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IGetUserService, UserService>();
+builder.Services.AddScoped<ITaskService, TaskService>();
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.PropertyNamingPolicy = null;

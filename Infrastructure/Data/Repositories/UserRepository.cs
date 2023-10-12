@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Infrastructure.Data.Repositories
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : IUserRepository, IGetUserRepository
     {
         private readonly DbAppContext _dbContext;
 
@@ -16,7 +16,7 @@ namespace CleanArchitecture.Infrastructure.Data.Repositories
         public async Task CreatAsync(UserEntity user)
         {
             if (user == null)
-                throw new ArgumentNullException(nameof(user));
+                throw new(nameof(user));
             await _dbContext.Users.AddAsync(user);
             await _dbContext.SaveChangesAsync();
         }
@@ -25,7 +25,7 @@ namespace CleanArchitecture.Infrastructure.Data.Repositories
         public async Task PutAsync(string userName, UserEntity updatedUser)
         {
             if (string.IsNullOrWhiteSpace(userName))
-                throw new ArgumentNullException(nameof(userName));
+                throw new (nameof(userName));
 
             if (updatedUser != null)
             {
@@ -42,18 +42,28 @@ namespace CleanArchitecture.Infrastructure.Data.Repositories
             }
             else
             {
-                throw new ArgumentNullException(nameof(updatedUser));
+                throw new (nameof(updatedUser));
             }
         }
 
         public async Task DeleteAsync(string userName)
         {
-            if (string.IsNullOrWhiteSpace(userName))
-                throw new ArgumentNullException(nameof(userName));
-            var existingUser = await _dbContext.Users.SingleOrDefaultAsync(u => u.UserName == userName) ?? throw new InvalidOperationException("User not found.");
-            _dbContext.Users.Remove(existingUser);
-            await _dbContext.SaveChangesAsync();
+            var existingUser = await GetAsync(userName);
+            if (existingUser != null)
+            {
+                _dbContext.Users.Remove(existingUser);
+                await _dbContext.SaveChangesAsync();
+            }
 
+        }
+
+        public async Task<UserEntity> GetAsync(string userName)
+        {
+            if (string.IsNullOrWhiteSpace(userName)) 
+                throw new ArgumentNullException(nameof(userName), "User name cannot be null or empty.");
+
+            return await _dbContext.Users.SingleOrDefaultAsync(u => u.UserName == userName)
+                ?? throw new InvalidOperationException("User not found.");
         }
     }
 }
