@@ -7,14 +7,17 @@ namespace CleanArchitecture.Presentation.Controllers
 {
     [Route("api/taskmanagment/[controller]")]
     [ApiController]
-    public class TaskController : ControllerBase, ICreatTask, IGetTask
+    public class TaskController : ControllerBase, ICreatTask, IGetTask, IPutTask
     {
         private readonly IGetUserService _getUser;
         private readonly ITaskService _taskService;
-        public TaskController(ITaskService taskService,IGetUserService getUser)
+        private readonly IGetTaskByIdService _taskByIdService;
+        public TaskController(ITaskService taskService,IGetUserService getUser, IGetTaskByIdService taskByIdService)
         {
             this._taskService = taskService;
             this._getUser = getUser;
+            this._taskByIdService = taskByIdService;
+
         }
 
         [HttpPost("creattask/{username}")]
@@ -53,6 +56,32 @@ namespace CleanArchitecture.Presentation.Controllers
 
             var userTasks = await _taskService.GetTaskAsync(user.Id);
             return Ok(userTasks);
+        }
+
+        [HttpPut("putusertask{username}/{id}")]
+        public async Task<IActionResult> PutUserTaskAsync(string username, int id, [FromBody] TaskDto taskDto)
+        {
+            if(taskDto == null) return BadRequest("Invalid task data.");
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            var user = await _getUser.GetUserAsync(username);
+            if (user == null)
+                return NotFound("User not found.");
+            
+            var taskToUpdate = await _taskByIdService.GetTaskByIdAsync(id);
+            
+            if (taskToUpdate == null)
+                return NotFound("Task not found.");
+
+            taskToUpdate.Name = taskDto.Name;
+            taskToUpdate.Description = taskDto.Description;
+            taskToUpdate.DueDate = taskDto.DueDate;
+            taskToUpdate.Status = taskDto.Status;
+            await _taskService.UpdateTaskAsync(taskToUpdate);
+
+            return Ok("Task updated successfully");
+
         }
 
 

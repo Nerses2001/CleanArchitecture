@@ -1,4 +1,5 @@
 ﻿using CleanArchitecture.Domain.Models;
+using System.Threading.Tasks;
 
 namespace CleanArchitecture.Domain.Services
 {
@@ -6,5 +7,6 @@ namespace CleanArchitecture.Domain.Services
     {
         Task CreateTaskAsync(TaskEntity taskEntity);
         Task<IEnumerable<TaskDto>> GetTaskAsync(int userId);
+        Task UpdateTaskAsync(TaskEntity task);
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Infrastructure.Data.Repositories
 {
-    public class TaskRepository : ITaskRepository
+    public class TaskRepository : ITaskRepository, IGetTaskByIdRepository
     {
         private readonly DbAppContext _dbAppContext;
 
@@ -25,8 +25,24 @@ namespace CleanArchitecture.Infrastructure.Data.Repositories
         public async Task<IEnumerable<TaskEntity>> GetAsync(int userId)
         {
             var tasks = await _dbAppContext.Tasks.Where(t => t.UserId == userId).ToListAsync();
-            Console.WriteLine(tasks.Count);
             return tasks;
+        }
+
+        public async Task<TaskEntity> GetTaskByIdAsync(int taskId)
+        {
+            var task = await _dbAppContext.Tasks.SingleOrDefaultAsync(t => t.Id == taskId);
+            if (task == null) throw new(nameof(task));
+            return task;
+        }
+
+        public async Task UpdateAsync(TaskEntity taskEntity)
+        {
+
+            if(taskEntity == null) throw new ArgumentNullException(nameof (taskEntity));
+
+            _dbAppContext.Tasks.Update(taskEntity);
+            await _dbAppContext.SaveChangesAsync();
+
         }
     }
 }

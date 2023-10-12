@@ -4,13 +4,15 @@ using CleanArchitecture.Domain.Services;
 
 namespace CleanArchitecture.Application.Services
 {
-    public class TaskService : ITaskService
+    public class TaskService : ITaskService, IGetTaskByIdService
     {
         private readonly ITaskRepository _taskRepository;
+        private readonly IGetTaskByIdRepository _taskByIdRepository;
 
-        public TaskService(ITaskRepository taskRepository)
+        public TaskService(ITaskRepository taskRepository, IGetTaskByIdRepository getTaskByIdRepository)
         {
             this._taskRepository = taskRepository;
+            this._taskByIdRepository = getTaskByIdRepository;
         }
         public async Task CreateTaskAsync(TaskEntity taskEntity)
         {
@@ -22,6 +24,16 @@ namespace CleanArchitecture.Application.Services
         {
             var tasks =  await _taskRepository.GetAsync(userId);
             return tasks.Select(taskEntity => TaskDto.FromTaskEntity(taskEntity));
+        }
+
+        public async Task<TaskEntity> GetTaskByIdAsync(int taskId)
+        {
+            return await _taskByIdRepository.GetTaskByIdAsync(taskId);
+        }
+
+        public async Task UpdateTaskAsync(TaskEntity task)
+        {
+            await _taskRepository.UpdateAsync(task);
         }
     }
 }

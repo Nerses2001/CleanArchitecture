@@ -6,5 +6,6 @@ namespace CleanArchitecture.Domain.Repositories
     {
         Task CreatAsync(TaskEntity tasks);
         Task<IEnumerable<TaskEntity>> GetAsync(int userId);
+        Task UpdateAsync(TaskEntity taskEntity);
     }
 }

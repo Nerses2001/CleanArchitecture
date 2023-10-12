@@ -4,6 +4,7 @@ namespace CleanArchitecture.Domain.Models
 {
     public class TaskDto
     {
+        public int Id { get; private set; }
 
         [Required(ErrorMessage = "The 'Name' field is required.")]
         [MaxLength(100, ErrorMessage = "The 'Name' field must be at most 100 characters.")]
@@ -36,7 +37,10 @@ namespace CleanArchitecture.Domain.Models
                 taskEntity.Description,
                 taskEntity.DueDate,
                 taskEntity.Status
-            );
+            )
+            {
+                Id = taskEntity.Id,
+            };
         }
     }
 }
