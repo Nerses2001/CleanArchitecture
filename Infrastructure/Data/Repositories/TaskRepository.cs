@@ -21,5 +21,12 @@ namespace CleanArchitecture.Infrastructure.Data.Repositories
             await _dbAppContext.Tasks.AddAsync(task);
             await _dbAppContext.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<TaskEntity>> GetAsync(int userId)
+        {
+            var tasks = await _dbAppContext.Tasks.Where(t => t.UserId == userId).ToListAsync();
+            Console.WriteLine(tasks.Count);
+            return tasks;
+        }
     }
 }

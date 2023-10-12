@@ -7,7 +7,7 @@ namespace CleanArchitecture.Presentation.Controllers
 {
     [Route("api/taskmanagment/[controller]")]
     [ApiController]
-    public class TaskController : ControllerBase, ICreatTask
+    public class TaskController : ControllerBase, ICreatTask, IGetTask
     {
         private readonly IGetUserService _getUser;
         private readonly ITaskService _taskService;
@@ -43,6 +43,17 @@ namespace CleanArchitecture.Presentation.Controllers
 
         }
 
+
+        [HttpGet("getusertasks/{username}")]
+        public async Task<IActionResult> GetUserTasksAsync(string username)
+        {
+            var user = await _getUser.GetUserAsync(username);
+            
+            if (user == null) return BadRequest("User Not Found");
+
+            var userTasks = await _taskService.GetTaskAsync(user.Id);
+            return Ok(userTasks);
+        }
 
 
     }

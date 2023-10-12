@@ -28,6 +28,15 @@ namespace CleanArchitecture.Domain.Models
             this.DueDate = dueDate;
             this.Status = status;
         }
-
+        public static TaskDto FromTaskEntity(TaskEntity taskEntity)
+        {
+            return new TaskDto
+            (
+                taskEntity.Name,
+                taskEntity.Description,
+                taskEntity.DueDate,
+                taskEntity.Status
+            );
+        }
     }
 }

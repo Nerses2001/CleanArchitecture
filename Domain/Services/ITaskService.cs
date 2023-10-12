@@ -5,5 +5,6 @@ namespace CleanArchitecture.Domain.Services
     public interface ITaskService
     {
         Task CreateTaskAsync(TaskEntity taskEntity);
+        Task<IEnumerable<TaskDto>> GetTaskAsync(int userId);
     }
 }
