@@ -20,15 +20,20 @@ namespace CleanArchitecture.Application.Services
 
         }
 
+        public async Task DeleteTaskAsync(TaskEntity taskEntity)
+        {
+            await _taskRepository.DeleteAsync(taskEntity);
+        }
+
         public async Task<IEnumerable<TaskDto>> GetTaskAsync(int userId)
         {
             var tasks =  await _taskRepository.GetAsync(userId);
             return tasks.Select(taskEntity => TaskDto.FromTaskEntity(taskEntity));
         }
 
-        public async Task<TaskEntity> GetTaskByIdAsync(int taskId)
+        public async Task<TaskEntity> GetTaskByIdAsync(int taskId, int userId)
         {
-            return await _taskByIdRepository.GetTaskByIdAsync(taskId);
+            return await _taskByIdRepository.GetTaskByIdAsync(taskId, userId);
         }
 
         public async Task UpdateTaskAsync(TaskEntity task)

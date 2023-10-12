@@ -7,7 +7,7 @@ namespace CleanArchitecture.Presentation.Controllers
 {
     [Route("api/taskmanagment/[controller]")]
     [ApiController]
-    public class TaskController : ControllerBase, ICreatTask, IGetTask, IPutTask
+    public class TaskController : ControllerBase, ICreatTask, IGetTask, IPutTask, IDeleteTask
     {
         private readonly IGetUserService _getUser;
         private readonly ITaskService _taskService;
@@ -45,7 +45,22 @@ namespace CleanArchitecture.Presentation.Controllers
             return Ok("Task created successfully");
 
         }
+        [HttpDelete("deleteusertask/{username}/{id}")]
+        public async Task<IActionResult> DeleteTaskAsync(string username, int id)
+        {
+            if (string.IsNullOrEmpty(username)) return BadRequest("Invalid task data.");
 
+            var user = await _getUser.GetUserAsync(username);
+            if(user == null) return NotFound("User not found.");
+
+            var task = await _taskByIdService.GetTaskByIdAsync(id,user.Id);
+            
+            if (task == null) return NotFound("Task not found.");
+
+            await _taskService.DeleteTaskAsync(task);
+
+            return Ok("Task deleted successfully");
+        }
 
         [HttpGet("getusertasks/{username}")]
         public async Task<IActionResult> GetUserTasksAsync(string username)
@@ -69,7 +84,7 @@ namespace CleanArchitecture.Presentation.Controllers
             if (user == null)
                 return NotFound("User not found.");
             
-            var taskToUpdate = await _taskByIdService.GetTaskByIdAsync(id);
+            var taskToUpdate = await _taskByIdService.GetTaskByIdAsync(id, user.Id);
             
             if (taskToUpdate == null)
                 return NotFound("Task not found.");

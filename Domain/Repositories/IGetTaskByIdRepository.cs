@@ -4,7 +4,7 @@ namespace CleanArchitecture.Domain.Repositories
 {
     public interface IGetTaskByIdRepository
     {
-        Task<TaskEntity> GetTaskByIdAsync(int taskId);
+        Task<TaskEntity> GetTaskByIdAsync(int taskId, int userId);
 
     }
 }

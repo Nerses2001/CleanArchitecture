@@ -8,5 +8,7 @@ namespace CleanArchitecture.Domain.Services
         Task CreateTaskAsync(TaskEntity taskEntity);
         Task<IEnumerable<TaskDto>> GetTaskAsync(int userId);
         Task UpdateTaskAsync(TaskEntity task);
+
+        Task DeleteTaskAsync(TaskEntity taskEntity);
     }
 }

@@ -22,15 +22,22 @@ namespace CleanArchitecture.Infrastructure.Data.Repositories
             await _dbAppContext.SaveChangesAsync();
         }
 
+        public async Task DeleteAsync(TaskEntity taskEntity)
+        {
+            if(taskEntity == null) throw new (nameof (taskEntity));
+            _dbAppContext.Tasks.Remove(taskEntity);
+            await _dbAppContext.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<TaskEntity>> GetAsync(int userId)
         {
             var tasks = await _dbAppContext.Tasks.Where(t => t.UserId == userId).ToListAsync();
             return tasks;
         }
 
-        public async Task<TaskEntity> GetTaskByIdAsync(int taskId)
+        public async Task<TaskEntity> GetTaskByIdAsync(int taskId, int userId)
         {
-            var task = await _dbAppContext.Tasks.SingleOrDefaultAsync(t => t.Id == taskId);
+            var task = await _dbAppContext.Tasks.SingleOrDefaultAsync(t => t.Id == taskId && t.UserId == userId);
             if (task == null) throw new(nameof(task));
             return task;
         }
