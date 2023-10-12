@@ -20,16 +20,14 @@ namespace CleanArchitecture.Domain.Models
         [Required(ErrorMessage = "The 'Status' field is required.")]
         public TaskStatus Status { get; set; }
         
-        public TaskDto(string name, string description, DateTime dateTime, TaskStatus taskStatus )
+        
+        public TaskDto(string name, string description, DateTime dueDate, TaskStatus status)
         {
             this.Name = name;
             this.Description = description;
-            this.DueDate = dateTime;
-            this.Status = taskStatus;
+            this.DueDate = dueDate;
+            this.Status = status;
         }
-        public TaskDto()
-        {
-            
-        }
+
     }
 }
